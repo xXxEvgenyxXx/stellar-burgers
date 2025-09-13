@@ -1,3 +1,5 @@
+/* prettier-ignore */
+/* eslint-disable */
 import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { Provider } from 'react-redux';
