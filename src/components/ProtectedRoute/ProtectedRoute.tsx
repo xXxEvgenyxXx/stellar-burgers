@@ -13,8 +13,13 @@ export const ProtectedRoute = ({
   const auth = useAuth();
   const location = useLocation();
 
+  // Если состояние авторизации еще не проверено, показываем загрузку
+  if (!auth.isAuthChecked) {
+    return null;
+  }
+
   if (onlyUnAuth && auth.user) {
-    const from = location.state?.from || '/';
+    const from = location.state?.from || { pathname: '/' };
     return <Navigate to={from} replace />;
   }
 
