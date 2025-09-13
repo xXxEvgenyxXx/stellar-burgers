@@ -1,13 +1,11 @@
 import { createContext, useContext } from 'react';
 
 interface AuthContextType {
-  user: boolean | null;
-  isAuthChecked: boolean;
+  user: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>({
-  user: null,
-  isAuthChecked: false
+  user: false
 });
 
 export const useAuth = () => useContext(AuthContext);

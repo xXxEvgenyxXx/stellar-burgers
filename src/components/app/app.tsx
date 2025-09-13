@@ -35,12 +35,8 @@ const AppContent = () => {
     <div className={styles.app}>
       <AppHeader />
       <Routes location={background || location}>
-        {/* Публичные маршруты - доступны всем пользователям */}
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
-        {/* Маршруты только для неавторизованных пользователей */}
         <Route
           path='/login'
           element={
@@ -73,7 +69,6 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
-        {/* Защищенные маршруты - только для авторизованных пользователей */}
         <Route
           path='/profile'
           element={
@@ -90,6 +85,8 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
         <Route
           path='/profile/orders/:number'
           element={
@@ -98,11 +95,9 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
-        {/* Страница 404 */}
         <Route path='*' element={<NotFound404 />} />
       </Routes>
 
-      {/* Модальные окна */}
       {background && (
         <Routes>
           <Route
