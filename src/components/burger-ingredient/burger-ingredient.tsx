@@ -14,10 +14,13 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const dispatch = useDispatch();
 
     const handleAdd = () => {
-      console.log('handleAdd сработал')
+      console.log('handleAdd сработал');
+      console.log(ingredient.type);
       if (ingredient.type === 'bun') {
+        console.log('bun123');
         dispatch(setBun(ingredient));
       } else {
+        console.log(ingredient);
         const constructorIngredient: TConstructorIngredient = {
           ...ingredient,
           id: `${ingredient._id}-${Date.now()}` // Уникальный id для каждого ингредиента в конструкторе
