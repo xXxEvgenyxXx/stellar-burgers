@@ -6,13 +6,15 @@ import { BurgerConstructorUI } from '@ui';
 import { TConstructorIngredient } from '@utils-types';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const { constructorItems, orderRequest, orderModalData } = useSelector(
-    (state: any) => state.burgerConstructor || {
-      constructorItems: { bun: null, ingredients: [] },
-      orderRequest: false,
-      orderModalData: null
-    }
+  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора СДЕЛАНО */
+  const constructorItems = useSelector((state: any) => 
+    state.burgerConstructor?.constructorItems || { bun: null, ingredients: [] }
+  );
+  const orderRequest = useSelector((state: any) => 
+    state.burgerConstructor?.orderRequest || false
+  );
+  const orderModalData = useSelector((state: any) => 
+    state.burgerConstructor?.orderModalData || null
   );
 
   const onOrderClick = () => {
