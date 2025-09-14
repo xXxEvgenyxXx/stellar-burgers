@@ -18,6 +18,7 @@ export const BurgerConstructor: FC = () => {
   );
 
   const onOrderClick = () => {
+    console.log('onOrderClick сработало');
     if (!constructorItems.bun || orderRequest) return;
   };
   
