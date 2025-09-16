@@ -1,4 +1,3 @@
-// src/services/slices/userSlice.ts
 /* prettier-ignore */
 /* eslint-disable */
 import { createSlice } from '@reduxjs/toolkit';
