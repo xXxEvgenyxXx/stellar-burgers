@@ -2,6 +2,8 @@
 /* eslint-disable */
 import { FC, useMemo } from 'react';
 import { useSelector } from '../../services/store';
+import { useNavigate } from 'react-router-dom';
+import { selectUser } from '../../services/slices/userSlice';
 import { BurgerConstructorUI } from '@ui';
 import { TConstructorIngredient } from '@utils-types';
 
@@ -16,9 +18,15 @@ export const BurgerConstructor: FC = () => {
   const orderModalData = useSelector((state: any) => 
     state.burgerConstructor?.orderModalData || null
   );
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
 
   const onOrderClick = () => {
     console.log('onOrderClick сработало');
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     if (!constructorItems.bun || orderRequest) return;
   };
   
