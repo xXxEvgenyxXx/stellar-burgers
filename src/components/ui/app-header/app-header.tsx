@@ -56,16 +56,24 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({
       <div className={styles.logo}>
         <Logo className='' />
       </div>
-      <div 
-        className={styles.link_position_last}
+      <NavLink
+        to="/profile" 
+        //className={styles.link_position_last}
+        className={({ isActive }) => 
+            `${styles.link_position_last} ${isActive ? styles.link_active : ''}`
+          }
         onClick={onProfileClick}
         style={{ cursor: 'pointer' }}
       >
-        <ProfileIcon type={'primary'} />
-        <p className='text text_type_main-default ml-2'>
-          {userName || 'Личный кабинет'}
-        </p>
-      </div>
+        {({isActive})=>(
+          <>
+          <ProfileIcon type={isActive ? 'primary':'secondary'} />
+          <p className='text text_type_main-default ml-2'>
+            {userName || 'Личный кабинет'}
+          </p>
+          </>
+        )}
+      </NavLink>
     </nav>
   </header>
 );
