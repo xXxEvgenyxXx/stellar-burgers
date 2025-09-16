@@ -60,7 +60,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({
         to="/profile" 
         //className={styles.link_position_last}
         className={({ isActive }) => 
-            `${styles.link_position_last} ${isActive ? styles.link_active : ''}`
+            `${styles.link_position_last} ${styles.link} ${isActive ? styles.link_active : ''}`
           }
         onClick={onProfileClick}
         style={{ cursor: 'pointer' }}
