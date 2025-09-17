@@ -1,21 +1,28 @@
+/* prettier-ignore */
+/* eslint-disable */
+/* prettier-ignore */
+/* eslint-disable */
 import { FC, useMemo } from 'react';
+import { useSelector } from '../../services/store';
+import { useParams } from 'react-router-dom';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
-import { TIngredient } from '@utils-types';
+import { TIngredient, TOrder } from '@utils-types';
+import { selectIngredients } from '../../services/slices/ingredientsSelectors';
+import { selectFeed } from '../../services/slices/feedSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
-
-  const ingredients: TIngredient[] = [];
+  const { number } = useParams<{ number: string }>();
+  const ingredients: TIngredient[] = useSelector(selectIngredients);
+  
+  // Получаем заказ из feed (публичные заказы)
+  const feed = useSelector(selectFeed);
+  
+  // Ищем заказ в feed orders
+  const orderData: TOrder | undefined = feed.orders.find(
+    order => order.number === Number(number)
+  );
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
@@ -28,7 +35,7 @@ export const OrderInfo: FC = () => {
     };
 
     const ingredientsInfo = orderData.ingredients.reduce(
-      (acc: TIngredientsWithCount, item) => {
+      (acc: TIngredientsWithCount, item: string) => {
         if (!acc[item]) {
           const ingredient = ingredients.find((ing) => ing._id === item);
           if (ingredient) {
@@ -47,7 +54,7 @@ export const OrderInfo: FC = () => {
     );
 
     const total = Object.values(ingredientsInfo).reduce(
-      (acc, item) => acc + item.price * item.count,
+      (acc: number, item: any) => acc + item.price * item.count,
       0
     );
 
