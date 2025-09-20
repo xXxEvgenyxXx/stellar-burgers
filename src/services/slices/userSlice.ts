@@ -11,7 +11,7 @@ import {
   TLoginData,
   TRegisterData
 } from '../../utils/burger-api';
-
+import { getCookie, setCookie,deleteCookie } from '../../utils/cookie';
 interface UserState {
   user: TUser | null;
   isAuthChecked: boolean;
@@ -53,9 +53,21 @@ export const registerUser = createAsyncThunk(
 // Async thunk для получения данных пользователя
 export const getUser = createAsyncThunk(
   'user/getUser',
-  async () => {
-    const response = await getUserApi();
-    return response.user;
+  async (_,{dispatch}) => {
+    try{
+      if(getCookie('accessToken')){
+        const response = await getUserApi();
+        return response.user;
+      }
+      return null;
+    }
+    catch(error){
+      console.warn('Ошибка при получении данных пользователя: ', error);
+      return null
+    }
+    finally{ 
+      dispatch(setAuthChecked());
+    }
   }
 );
 
@@ -85,11 +97,9 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
-      state.isAuthChecked = true;
     },
     clearUser: (state) => {
       state.user = null;
-      state.isAuthChecked = true;
     },
     setAuthChecked: (state) => {
       state.isAuthChecked = true;
@@ -105,7 +115,6 @@ export const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        state.isAuthChecked = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -119,7 +128,6 @@ export const userSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        state.isAuthChecked = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -155,41 +163,12 @@ export const userSlice = createSlice({
       // Обработка logout
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
-        state.isAuthChecked = true;
       })
       .addCase(logout.rejected, (state, action) => {
         state.error = action.error.message || 'Ошибка при выходе';
       });
   },
 });
-
-// Вспомогательные функции для работы с cookies
-function setCookie(name: string, value: string, props?: any) {
-  props = props || {};
-  let exp = props.expires;
-  if (typeof exp == 'number' && exp) {
-    const d = new Date();
-    d.setTime(d.getTime() + exp * 1000);
-    exp = props.expires = d;
-  }
-  if (exp && exp.toUTCString) {
-    props.expires = exp.toUTCString();
-  }
-  value = encodeURIComponent(value);
-  let updatedCookie = name + '=' + value;
-  for (const propName in props) {
-    updatedCookie += '; ' + propName;
-    const propValue = props[propName];
-    if (propValue !== true) {
-      updatedCookie += '=' + propValue;
-    }
-  }
-  document.cookie = updatedCookie;
-}
-
-function deleteCookie(name: string) {
-  setCookie(name, '', { expires: -1 });
-}
 
 export const { setUser, clearUser, setAuthChecked } = userSlice.actions;
 
