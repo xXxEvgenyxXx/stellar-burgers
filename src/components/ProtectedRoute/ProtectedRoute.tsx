@@ -1,5 +1,10 @@
+/* prettier-ignore */
+/* eslint-disable */
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../services/auth';
+import { Preloader } from '@ui';
+import { useSelector } from '../../services/store';
+import { selectUser,selectIsAuthChecked } from '../../services/slices/userSlice';
 
 interface ProtectedRouteProps {
   onlyUnAuth?: boolean;
@@ -10,20 +15,21 @@ export const ProtectedRoute = ({
   onlyUnAuth = false,
   children
 }: ProtectedRouteProps) => {
-  const auth = useAuth();
+  const user = useSelector(selectUser);
+  const isAuthChecked = useSelector(selectIsAuthChecked);
   const location = useLocation();
 
   // Если состояние авторизации еще не проверено, показываем загрузку
-  if (!auth.isAuthChecked) {
-    return null;
+  if (!isAuthChecked) {
+    return <Preloader />;
   }
 
-  if (onlyUnAuth && auth.user) {
+  if (onlyUnAuth && user) {
     const from = location.state?.from || { pathname: '/' };
     return <Navigate to={from} replace />;
   }
 
-  if (!onlyUnAuth && !auth.user) {
+  if (!onlyUnAuth && !user) {
     return <Navigate to='/login' state={{ from: location }} replace />;
   }
 

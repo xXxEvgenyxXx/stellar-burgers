@@ -21,11 +21,20 @@ import {
   useNavigate
 } from 'react-router-dom';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
+import { useEffect } from 'react';
+import { useDispatch } from '../../services/store';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
+import { getUser } from '../../services/slices/userSlice';
 
 const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const background = location.state && location.state.background;
+  useEffect(() => {
+    dispatch(fetchIngredients());
+    dispatch(getUser());
+  }, [dispatch]);
 
   const handleModalClose = () => {
     navigate(-1);
