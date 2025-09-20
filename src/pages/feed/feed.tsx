@@ -6,12 +6,15 @@ import { fetchFeed, selectFeed, selectFeedLoading } from '../../services/slices/
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { FC } from 'react';
+import { useCallback } from 'react';
+import { getFeedsApi } from '@api';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
   const dispatch = useDispatch();
   const { orders } = useSelector(selectFeed);
   const loading = useSelector(selectFeedLoading);
+  const handleGetFeeds = useCallback(()=>dispatch(getFeedsApi),[dispatch])
 
   useEffect(() => {
     dispatch(fetchFeed());
@@ -21,5 +24,5 @@ export const Feed: FC = () => {
     return <Preloader />;
   }
 
-  return <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  return <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
 };
