@@ -3,12 +3,14 @@ import ingredientsReducer from './slices/ingredientsSlice';
 import burgerConstructorReducer from './slices/burgerConstructorSlice';
 import userReducer from './slices/userSlice';
 import feedReducer from './slices/feedSlice';
+import ordersReducer from './slices/ordersSlice';
 
 const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   burgerConstructor: burgerConstructorReducer,
   user: userReducer,
-  feed: feedReducer
+  feed: feedReducer,
+  orders: ordersReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
