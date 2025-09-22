@@ -1,9 +1,11 @@
 /* prettier-ignore */
 /* eslint-disable */
 import { FC, useMemo } from 'react';
-import { useSelector } from '../../services/store';
+import { useSelector, useDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { selectUser } from '../../services/slices/userSlice';
+import { clearConstructor, setOrderRequest, setOrderModalData } from '../../services/slices/burgerConstructorSlice';
+import { orderBurgerApi } from '../../utils/burger-api';
 import { BurgerConstructorUI } from '@ui';
 import { TConstructorIngredient } from '@utils-types';
 
@@ -19,6 +21,7 @@ export const BurgerConstructor: FC = () => {
     state.burgerConstructor?.orderModalData || null
   );
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onOrderClick = () => {
@@ -27,10 +30,40 @@ export const BurgerConstructor: FC = () => {
       navigate('/login');
       return;
     }
+    
     if (!constructorItems.bun || orderRequest) return;
+    
+    // Собираем массив ID ингредиентов для заказа
+    const ingredientIds = [
+      constructorItems.bun._id,
+      ...constructorItems.ingredients.map((item: TConstructorIngredient) => item._id),
+      constructorItems.bun._id // Вторая булка
+    ];
+    
+    // Устанавливаем состояние запроса
+    dispatch(setOrderRequest(true));
+    
+    // Отправляем запрос на создание заказа
+    orderBurgerApi(ingredientIds)
+      .then((data) => {
+        // Успешный ответ - показываем модальное окно с данными заказа
+        dispatch(setOrderModalData(data.order));
+        // Очищаем конструктор
+        dispatch(clearConstructor());
+      })
+      .catch((error) => {
+        console.error('Ошибка при оформлении заказа:', error);
+        // Здесь можно установить ошибку в состояние, если нужно
+      })
+      .finally(() => {
+        // Сбрасываем состояние запроса
+        dispatch(setOrderRequest(false));
+      });
   };
   
-  const closeOrderModal = () => {};
+  const closeOrderModal = () => {
+    dispatch(setOrderModalData(null));
+  };
 
   const price = useMemo(
     () =>
