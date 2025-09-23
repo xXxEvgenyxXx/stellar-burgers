@@ -11,7 +11,8 @@ import {
   TLoginData,
   TRegisterData
 } from '../../utils/burger-api';
-import { getCookie, setCookie,deleteCookie } from '../../utils/cookie';
+import { getCookie, setCookie, deleteCookie } from '../../utils/cookie';
+
 interface UserState {
   user: TUser | null;
   isAuthChecked: boolean;
@@ -53,19 +54,17 @@ export const registerUser = createAsyncThunk(
 // Async thunk для получения данных пользователя
 export const getUser = createAsyncThunk(
   'user/getUser',
-  async (_,{dispatch}) => {
-    try{
-      if(getCookie('accessToken')){
+  async (_, { dispatch }) => {
+    try {
+      if (getCookie('accessToken')) {
         const response = await getUserApi();
         return response.user;
       }
       return null;
-    }
-    catch(error){
+    } catch (error) {
       console.warn('Ошибка при получении данных пользователя: ', error);
-      return null
-    }
-    finally{ 
+      return null;
+    } finally { 
       dispatch(setAuthChecked());
     }
   }
