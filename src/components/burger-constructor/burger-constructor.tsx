@@ -8,17 +8,18 @@ import { clearConstructor, setOrderRequest, setOrderModalData } from '../../serv
 import { orderBurgerApi } from '../../utils/burger-api';
 import { BurgerConstructorUI } from '@ui';
 import { TConstructorIngredient } from '@utils-types';
+import { RootState } from '../../services/store';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора СДЕЛАНО */
-  const constructorItems = useSelector((state: any) => 
-    state.burgerConstructor?.constructorItems || { bun: null, ingredients: [] }
+  const constructorItems = useSelector((state: RootState) => 
+    state.burgerConstructor.constructorItems
   );
-  const orderRequest = useSelector((state: any) => 
-    state.burgerConstructor?.orderRequest || false
+  const orderRequest = useSelector((state: RootState) => 
+    state.burgerConstructor.orderRequest
   );
-  const orderModalData = useSelector((state: any) => 
-    state.burgerConstructor?.orderModalData || null
+  const orderModalData = useSelector((state: RootState) => 
+    state.burgerConstructor.orderModalData
   );
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
