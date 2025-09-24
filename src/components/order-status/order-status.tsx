@@ -22,5 +22,5 @@ export const OrderStatus: FC<OrderStatusProps> = ({ status }) => {
   }
   console.log(status);
 
-  return <OrderStatusUI textStyle={textStyle} text={status} />;
+  return <OrderStatusUI textStyle={textStyle} text={statusText[status]} />;
 };
