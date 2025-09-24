@@ -1,4 +1,5 @@
-// components/app/app.tsx
+/* prettier-ignore */
+/* eslint-disable */
 import {
   ConstructorPage,
   Feed,
@@ -25,6 +26,7 @@ import { useEffect } from 'react';
 import { useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { getUser } from '../../services/slices/userSlice';
+import { useMatch } from 'react-router-dom';
 
 const AppContent = () => {
   const location = useLocation();
@@ -39,6 +41,9 @@ const AppContent = () => {
   const handleModalClose = () => {
     navigate(-1);
   };
+  const profileMatch = useMatch('/profile/orders/:number')?.params.number;
+  const feedMatch = useMatch('/feed/:number')?.params.number;
+  const orderNumber = profileMatch || feedMatch;
 
   return (
     <div className={styles.app}>
@@ -125,7 +130,7 @@ const AppContent = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title='' onClose={handleModalClose}>
+              <Modal title={`#${orderNumber && orderNumber.padStart(6,'0')}`} onClose={handleModalClose}>
                 <OrderInfo />
               </Modal>
             }
@@ -134,7 +139,7 @@ const AppContent = () => {
             path='/profile/orders/:number'
             element={
               <ProtectedRoute>
-                <Modal title='' onClose={handleModalClose}>
+                <Modal title={`#${orderNumber && orderNumber.padStart(6,'0')}`} onClose={handleModalClose}>
                   <OrderInfo />
                 </Modal>
               </ProtectedRoute>

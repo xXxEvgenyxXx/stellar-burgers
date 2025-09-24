@@ -21,7 +21,7 @@ export const OrderInfo: FC = () => {
   const orderData: TOrder | undefined = feed.orders.find(
     order => order.number === Number(number)
   );
-
+  console.log(orderData);
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
@@ -67,6 +67,7 @@ export const OrderInfo: FC = () => {
   if (!orderInfo) {
     return <Preloader />;
   }
+  console.log(orderInfo.status);
 
   return <OrderInfoUI orderInfo={orderInfo} />;
 };
