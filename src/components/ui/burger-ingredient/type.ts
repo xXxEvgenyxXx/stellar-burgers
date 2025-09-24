@@ -3,7 +3,7 @@ import { TIngredient } from '@utils-types';
 
 export type TBurgerIngredientUIProps = {
   ingredient: TIngredient;
-  count: number;
+  count: number | null;
   locationState: { background: Location };
   handleAdd: () => void;
 };

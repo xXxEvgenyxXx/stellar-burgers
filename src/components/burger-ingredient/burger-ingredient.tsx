@@ -7,6 +7,7 @@ import { addIngredient, setBun } from '../../services/slices/burgerConstructorSl
 import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
 import { TConstructorIngredient } from '@utils-types';
+import { RootState } from '../../services/store';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
   ({ ingredient, count }) => {
@@ -14,7 +15,7 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const dispatch = useDispatch();
     
     // Получаем ингредиенты из конструктора
-    const constructorItems = useSelector((state: any) => state.burgerConstructor.constructorItems);
+    const constructorItems = useSelector((state: RootState) => state.burgerConstructor.constructorItems);
     
     // Вычисляем количество данного ингредиента в конструкторе
     const ingredientCount = constructorItems.ingredients.filter(
@@ -40,7 +41,7 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     return (
       <BurgerIngredientUI
         ingredient={ingredient}
-        count={ingredientCount > 0 ? ingredientCount : undefined}
+        count={ingredientCount > 0 ? ingredientCount : null}
         locationState={{ background: location }}
         handleAdd={handleAdd}
       />
