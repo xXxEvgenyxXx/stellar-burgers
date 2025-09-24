@@ -1,7 +1,5 @@
 /* prettier-ignore */
 /* eslint-disable */
-/* prettier-ignore */
-/* eslint-disable */
 import { FC, useMemo } from 'react';
 import { useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
@@ -50,11 +48,11 @@ export const OrderInfo: FC = () => {
 
         return acc;
       },
-      {}
+      {} as TIngredientsWithCount
     );
 
     const total = Object.values(ingredientsInfo).reduce(
-      (acc: number, item: any) => acc + item.price * item.count,
+      (acc: number, item) => acc + item.price * item.count,
       0
     );
 
