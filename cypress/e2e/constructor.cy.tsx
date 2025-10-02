@@ -1,14 +1,30 @@
+// cypress/e2e/constructor.cy.tsx
 describe('Конструктор бургера', () => {
   beforeEach(() => {
     cy.visit('/');
+    
+    // Настройка перехвата для всех тестов
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' }).as('getIngredients');
     cy.wait('@getIngredients');
+    
+    // Настройка перехвата для авторизации (для всех тестов)
+    cy.intercept('POST', 'api/auth/token', {
+      refreshToken: 'mock_refresh_token',
+      accessToken: 'mock_access_token'
+    }).as('token');
+    
+    cy.intercept('GET', 'api/auth/user', {
+      user: {
+        email: 'test@example.com',
+        name: 'Test User'
+      }
+    }).as('getUser');
   });
 
   describe('Добавление ингредиентов', () => {
     it('Добавление ингредиента в конструктор', () => {
       // Находим первый ингредиент и кликаем по нему
-      cy.get('[data-cy=ingredient-item]').eq(0).click();
+      cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
       cy.get('[data-cy=modal]').should('be.visible');
       cy.get('[data-cy=modal-close]').click();
       
@@ -16,7 +32,7 @@ describe('Конструктор бургера', () => {
       cy.get('[data-cy=constructor-bun-top]').should('exist');
 
       // Находим следующий ингредиент и кликаем по нему
-      cy.get('[data-cy=ingredient-item]').eq(1).click();
+      cy.get('[data-cy=ingredient-category-mains]').eq(1).click();
       cy.get('[data-cy=modal]').should('be.visible');
       cy.get('[data-cy=modal-close]').click();
       
@@ -28,7 +44,7 @@ describe('Конструктор бургера', () => {
   describe('Работа модальных окон', () => {
     it('Открытие и закрытие модального окна ингредиента', () => {
       // Открываем модальное окно
-      cy.get('[data-cy=ingredient-item]').eq(0).click();
+      cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
       cy.get('[data-cy=modal]').should('be.visible');
 
       // Закрываем по крестику
@@ -38,7 +54,7 @@ describe('Конструктор бургера', () => {
 
     it('Закрытие модального окна по оверлею', () => {
       // Открываем модальное окно
-      cy.get('[data-cy=ingredient-item]').eq(0).click();
+      cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
       cy.get('[data-cy=modal]').should('be.visible');
 
       // Закрываем по оверлею
@@ -49,20 +65,7 @@ describe('Конструктор бургера', () => {
 
   describe('Создание заказа', () => {
     it('Оформление заказа и отображение номера', () => {
-      // Мокаем токены и данные пользователя
-      cy.intercept('POST', 'api/auth/token', {
-        refreshToken: 'mock_refresh_token',
-        accessToken: 'mock_access_token'
-      }).as('token');
-      
-      cy.intercept('GET', 'api/auth/user', {
-        user: {
-          email: 'test@example.com',
-          name: 'Test User'
-        }
-      }).as('getUser');
-      
-      // Мокаем создание заказа
+      // Мокаем создание заказа (только для этого теста)
       cy.intercept('POST', 'api/orders', {
         success: true,
         name: 'test_order',
@@ -72,9 +75,9 @@ describe('Конструктор бургера', () => {
       }).as('createOrder');
 
       // Добавляем ингредиенты
-      cy.get('[data-cy=ingredient-item]').eq(0).click();
+      cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
       cy.get('[data-cy=modal-close]').click();
-      cy.get('[data-cy=ingredient-item]').eq(1).click();
+      cy.get('[data-cy=ingredient-category-mains]').eq(1).click();
       cy.get('[data-cy=modal-close]').click();
 
       // Кликаем по кнопке "Оформить заказ"
