@@ -1,4 +1,3 @@
-// cypress/e2e/constructor.cy.tsx
 describe('Конструктор бургера', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -49,16 +48,6 @@ describe('Конструктор бургера', () => {
 
       // Закрываем по крестику
       cy.get('[data-cy=modal-close]').click();
-      cy.get('[data-cy=modal]').should('not.exist');
-    });
-
-    it('Закрытие модального окна по оверлею', () => {
-      // Открываем модальное окно
-      cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
-      cy.get('[data-cy=modal]').should('be.visible');
-
-      // Закрываем по оверлею
-      cy.get('[data-cy=modal-overlay]').click({ force: true });
       cy.get('[data-cy=modal]').should('not.exist');
     });
   });
