@@ -24,6 +24,8 @@ describe('Конструктор бургера', () => {
     it('Добавление ингредиента в конструктор', () => {
       // Находим первый ингредиент и кликаем по нему
       cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
+      
+      // Проверяем, что модальное окно открылось
       cy.get('[data-cy=modal]').should('be.visible');
       cy.get('[data-cy=modal-close]').click();
       
@@ -32,6 +34,8 @@ describe('Конструктор бургера', () => {
 
       // Находим следующий ингредиент и кликаем по нему
       cy.get('[data-cy=ingredient-category-mains]').eq(1).click();
+      
+      // Проверяем, что модальное окно открылось
       cy.get('[data-cy=modal]').should('be.visible');
       cy.get('[data-cy=modal-close]').click();
       
@@ -44,6 +48,8 @@ describe('Конструктор бургера', () => {
     it('Открытие и закрытие модального окна ингредиента', () => {
       // Открываем модальное окно
       cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
+      
+      // Проверяем, что модальное окно открылось
       cy.get('[data-cy=modal]').should('be.visible');
 
       // Закрываем по крестику
