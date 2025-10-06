@@ -26,13 +26,14 @@ describe('Конструктор бургера', () => {
       cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
       
       // Проверяем, что булка добавлена в конструктор
-      cy.get('[data-cy=ingredient-category-buns]').should('exist');
+      cy.get('[data-cy=constructor-bun-top]').should('exist');
+      cy.get('[data-cy=ingredient-category-mains]').should('exist');
 
       // Находим следующий ингредиент и кликаем по нему
-      cy.get('[data-cy=ingredient-category-mains]').eq(1).click();
+      cy.get('[data-cy=ingredient-category-mains]').click();
       
       // Проверяем, что начинка добавлена в конструктор
-      cy.get('[data-cy=constructor-ingredient]').should('have.length.greaterThan', 0);
+      cy.get('.constructor-element').should('exist');
     });
   });
 
