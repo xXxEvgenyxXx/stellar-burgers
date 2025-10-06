@@ -40,7 +40,7 @@ describe('Конструктор бургера', () => {
   describe('Работа модальных окон', () => {
     it('Открытие и закрытие модального окна ингредиента', () => {
       // Открываем модальное окно
-      cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
+      cy.get('[data-cy=ingredient-category-buns]').get('[data-cy=ingredient-item]').eq(0).click();
 
       cy.get('[data-cy=modal]').should('exist');
 

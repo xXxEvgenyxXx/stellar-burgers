@@ -1,3 +1,5 @@
+/* prettier-ignore */
+/* eslint-disable */
 import React, { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './burger-ingredient.module.css';
@@ -15,7 +17,7 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
     const { image, price, name, _id } = ingredient;
 
     return (
-      <li className={styles.container}>
+      <li data-cy="ingredient-item" className={styles.container}>
         <Link
           className={styles.article}
           to={`/ingredients/${_id}`}
