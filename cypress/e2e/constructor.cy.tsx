@@ -1,3 +1,4 @@
+// cypress/e2e/constructor.cy.tsx
 describe('Конструктор бургера', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -5,6 +6,11 @@ describe('Конструктор бургера', () => {
     // Настройка перехвата для всех тестов
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' }).as('getIngredients');
     cy.wait('@getIngredients');
+    
+    // Мокаем токены и данные пользователя для всех тестов
+    cy.intercept('POST', 'api/auth/token', { fixture: 'login.json' }).as('token');
+    
+    cy.intercept('GET', 'api/auth/user', { fixture: 'user.json' }).as('getUser');
   });
 
   describe('Добавление ингредиентов', () => {
@@ -37,27 +43,14 @@ describe('Конструктор бургера', () => {
 
   describe('Создание заказа', () => {
     it('Оформление заказа и отображение номера', () => {
-      // Мокаем токены и данные пользователя
-      cy.intercept('POST', 'api/auth/token', {
-        refreshToken: 'mock_refresh_token',
-        accessToken: 'mock_access_token'
-      }).as('token');
-      
-      cy.intercept('GET', 'api/auth/user', {
-        user: {
-          email: 'test@example.com',
-          name: 'Test User'
-        }
-      }).as('getUser');
+      // Устанавливаем токены в localStorage и cookies для авторизации
+      cy.window().then((win) => {
+        win.localStorage.setItem('refreshToken', 'test-refreshToken');
+      });
+      cy.setCookie('accessToken', 'test-accessToken');
       
       // Мокаем создание заказа
-      cy.intercept('POST', 'api/orders', {
-        success: true,
-        name: 'test_order',
-        order: {
-          number: 12345
-        }
-      }).as('createOrder');
+      cy.intercept('POST', 'api/orders', { fixture: 'postOrder.json' }).as('createOrder');
 
       // Добавляем ингредиенты
       cy.get('[data-cy=ingredient-category-buns]').get('[data-cy=ingredient-item]').eq(0).click();
@@ -70,7 +63,7 @@ describe('Конструктор бургера', () => {
 
       // Проверяем, что модальное окно открылось и отображается правильный номер
       cy.get('[data-cy=order-modal]').should('exist');
-      cy.get('[data-cy=order-number]').should('have.text', '12345');
+      cy.get('[data-cy=order-number]').should('have.text', '123456');
 
       // Закрываем модальное окно
       cy.get('[data-cy=modal-close]').click();
