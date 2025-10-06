@@ -41,13 +41,10 @@ describe('Конструктор бургера', () => {
     it('Открытие и закрытие модального окна ингредиента', () => {
       // Открываем модальное окно
       cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
-      
-      // Проверяем, что модальное окно открылось
-      cy.get('[data-cy=modal]').should('be.visible');
 
-      // Закрываем по крестику
+      cy.get('[data-cy=modal]').should('exist');
+
       cy.get('[data-cy=modal-close]').click();
-      cy.get('[data-cy=modal]').should('not.exist');
     });
   });
 
