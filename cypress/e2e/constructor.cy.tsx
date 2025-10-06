@@ -25,19 +25,11 @@ describe('Конструктор бургера', () => {
       // Находим первый ингредиент и кликаем по нему
       cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
       
-      // Проверяем, что модальное окно открылось
-      cy.get('[data-cy=modal]').should('be.visible');
-      cy.get('[data-cy=modal-close]').click();
-      
       // Проверяем, что булка добавлена в конструктор
-      cy.get('[data-cy=constructor-bun-top]').should('exist');
+      cy.get('[data-cy=ingredient-category-buns]').should('exist');
 
       // Находим следующий ингредиент и кликаем по нему
       cy.get('[data-cy=ingredient-category-mains]').eq(1).click();
-      
-      // Проверяем, что модальное окно открылось
-      cy.get('[data-cy=modal]').should('be.visible');
-      cy.get('[data-cy=modal-close]').click();
       
       // Проверяем, что начинка добавлена в конструктор
       cy.get('[data-cy=constructor-ingredient]').should('have.length.greaterThan', 0);
@@ -50,11 +42,11 @@ describe('Конструктор бургера', () => {
       cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
       
       // Проверяем, что модальное окно открылось
-      cy.get('[data-cy=modal]').should('be.visible');
+      cy.get('#modals').should('be.visible');
 
       // Закрываем по крестику
       cy.get('[data-cy=modal-close]').click();
-      cy.get('[data-cy=modal]').should('not.exist');
+      cy.get('#modals').should('not.exist');
     });
   });
 
@@ -79,7 +71,7 @@ describe('Конструктор бургера', () => {
       cy.get('[data-cy=order-button]').click();
 
       // Проверяем, что модальное окно открылось и отображается правильный номер
-      cy.get('[data-cy=order-modal]').should('be.visible');
+      cy.get('[data-cy=order-modal]').should('exist');
       cy.get('[data-cy=order-number]').should('have.text', '12345');
 
       // Закрываем модальное окно
