@@ -23,7 +23,7 @@ describe('Конструктор бургера', () => {
   describe('Добавление ингредиентов', () => {
     it('Добавление ингредиента в конструктор', () => {
       // Находим первый ингредиент и кликаем по нему
-      cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
+      cy.get('[data-cy=ingredient-category-buns]').contains('Добавить').click();
       
       // Проверяем, что булка добавлена в конструктор
       cy.get('[data-cy=constructor-bun-top]').should('exist');
@@ -43,11 +43,11 @@ describe('Конструктор бургера', () => {
       cy.get('[data-cy=ingredient-category-buns]').eq(0).click();
       
       // Проверяем, что модальное окно открылось
-      cy.get('#modals').should('be.visible');
+      cy.get('[data-cy=modal]').should('be.visible');
 
       // Закрываем по крестику
       cy.get('[data-cy=modal-close]').click();
-      cy.get('#modals').should('not.exist');
+      cy.get('[data-cy=modal]').should('not.exist');
     });
   });
 
