@@ -1,4 +1,3 @@
-// cypress/e2e/constructor.cy.tsx
 const INGREDIENT_CATEGORY_BUNS = '[data-cy=ingredient-category-buns]';
 const INGREDIENT_CATEGORY_MAINS = '[data-cy=ingredient-category-mains]';
 const INGREDIENT_CATEGORY_SAUCES = '[data-cy=ingredient-category-sauces]';
