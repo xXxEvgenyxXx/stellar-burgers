@@ -28,6 +28,7 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
 
     return (
       <BurgerConstructorElementUI
+        data-cy="constructor-ingredient"
         ingredient={ingredient}
         index={index}
         totalItems={totalItems}
