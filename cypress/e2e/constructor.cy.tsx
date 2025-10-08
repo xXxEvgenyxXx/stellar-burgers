@@ -52,7 +52,7 @@ describe('Конструктор бургера', () => {
       cy.setCookie('accessToken', 'test-accessToken');
 
       // Переходим на нужный URL, чтобы cookies были установлены для правильного домена
-      cy.visit('http://localhost:4000');
+      cy.visit('/');
     });
 
     afterEach(() => {

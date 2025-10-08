@@ -12,7 +12,7 @@ interface BurgerConstructorState {
   orderModalData: TOrder | null;
 }
 
-const initialState: BurgerConstructorState = {
+export const initialState: BurgerConstructorState = {
   constructorItems: {
     bun: null,
     ingredients: []
