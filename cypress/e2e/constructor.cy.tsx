@@ -20,37 +20,55 @@ describe('Конструктор бургера', () => {
 
   describe('Добавление ингредиентов', () => {
     it('Добавление ингредиента в конструктор', () => {
-      // Находим первый ингредиент и кликаем по нему
-      cy.get(INGREDIENT_CATEGORY_BUNS).get(INGREDIENT_ITEM).eq(0).click();
-      
-      // Проверяем, что модальное окно открылось и отображаются детали ингредиента
-      cy.get(MODAL).should('be.visible');
-      cy.get(MODAL_CLOSE).click();
-
-      cy.get(INGREDIENT_CATEGORY_BUNS).get(INGREDIENT_ITEM).contains('Добавить').click();
+      // Получаем название первого ингредиента в категории булок
+      cy.get(INGREDIENT_CATEGORY_BUNS).get(INGREDIENT_ITEM).eq(0).within(() => {
+        cy.get('p:first').invoke('text').then((ingredientName) => {
+          // Кликаем по кнопке "Добавить" внутри того же элемента
+          cy.contains('Добавить').click();
+          
+          // Проверяем, что в конструкторе появился элемент с названием добавленного ингредиента
+          // Проверяем, что булка добавлена в конструктор
+          cy.get(CONSTRUCTOR_BUN_TOP).should('exist');
+          cy.get(CONSTRUCTOR_BUN_TOP).should('contain', ingredientName);
+        });
+      });
       
       // Проверяем, что булка добавлена в конструктор
       cy.get(CONSTRUCTOR_BUN_TOP).should('exist');
       
-      // Находим следующий ингредиент и кликаем по нему
-      cy.get(INGREDIENT_CATEGORY_MAINS).get(INGREDIENT_ITEM).eq(0).click();
+      // Получаем название первого ингредиента в категории начинок
+      cy.get(INGREDIENT_CATEGORY_MAINS).get(INGREDIENT_ITEM).eq(0).within(() => {
+        cy.get('p:first').invoke('text').then((ingredientName) => {
+          // Кликаем по кнопке "Добавить" внутри того же элемента
+          cy.contains('Добавить').click();
+          
+          // Проверяем, что в конструкторе появился элемент с названием добавленного ингредиента
+          cy.get(CONSTRUCTOR_INGREDIENT).should('exist');
+          cy.get(CONSTRUCTOR_INGREDIENT).should('contain', ingredientName);
+        });
+      });
     });
   });
 
   describe('Работа модальных окон', () => {
     it('Открытие и закрытие модального окна ингредиента', () => {
-      // Открываем модальное окно
-      cy.get(INGREDIENT_CATEGORY_BUNS).get(INGREDIENT_ITEM).eq(0).click();
+      // Получаем название первого ингредиента в категории булок
+      cy.get(INGREDIENT_CATEGORY_BUNS).get(INGREDIENT_ITEM).eq(0).within(() => {
+        cy.get('p:first').invoke('text').then((ingredientName) => {
+          // Открываем модальное окно
+          cy.get('img').click(); // Кликаем на изображение ингредиента
 
-      // Проверяем, что модальное окно открылось и отображаются детали ингредиента
-      cy.get(MODAL).should('be.visible');
-      
-      // Проверяем, что в модальном окне отображаются детали именно того ингредиента, на который кликнули
-      cy.get(MODAL).contains('Детали ингредиента');
-      
-      // Закрываем по крестику
-      cy.get(MODAL_CLOSE).click();
-      cy.get(MODAL).should('not.exist');
+          // Проверяем, что модальное окно открылось и отображаются детали ингредиента
+          cy.get(MODAL).should('exist');
+          
+          // Проверяем, что в модальном окне отображается название именно того ингредиента, на который кликнули
+          cy.get(MODAL).should('contain', ingredientName);
+          
+          // Закрываем по крестику
+          cy.get(MODAL_CLOSE).click();
+          cy.get(MODAL).should('not.exist');
+        });
+      });
     });
   });
 
