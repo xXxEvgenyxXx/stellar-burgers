@@ -12,7 +12,7 @@ interface OrdersState {
 }
 
 // Начальное состояние
-const initialState: OrdersState = {
+export const initialState: OrdersState = {
   orders: [],
   loading: false,
   error: null

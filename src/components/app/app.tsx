@@ -122,7 +122,7 @@ const AppContent = () => {
           <Route
             path='/ingredients/:id'
             element={
-              <Modal title='Детали ингредиента' onClose={handleModalClose}>
+              <Modal data-cy="modal" title='Детали ингредиента' onClose={handleModalClose}>
                 <IngredientDetails />
               </Modal>
             }
@@ -130,7 +130,7 @@ const AppContent = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title={`#${orderNumber && orderNumber.padStart(6,'0')}`} onClose={handleModalClose}>
+              <Modal data-cy="modal" title={`#${orderNumber && orderNumber.padStart(6,'0')}`} onClose={handleModalClose}>
                 <OrderInfo />
               </Modal>
             }
@@ -139,7 +139,7 @@ const AppContent = () => {
             path='/profile/orders/:number'
             element={
               <ProtectedRoute>
-                <Modal title={`#${orderNumber && orderNumber.padStart(6,'0')}`} onClose={handleModalClose}>
+                <Modal data-cy="modal" title={`#${orderNumber && orderNumber.padStart(6,'0')}`} onClose={handleModalClose}>
                   <OrderInfo />
                 </Modal>
               </ProtectedRoute>
